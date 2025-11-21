@@ -48,12 +48,80 @@ public class MuseoLocalController {
                     }
             )
     )
-    @Operation(description = "Obtener un listado con todos los museos.")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Museos obtenidos correctamente",
+            content = @Content(
+                    mediaType = "application/JSON",
+                    schema = @Schema(implementation = MuseumResponseDto.class),
+                    examples = @ExampleObject(
+                            value = """
+                                    [
+                                      {
+                                        "id": 1,
+                                        "nombre": "British Museum",
+                                        "ciudad": "Londres",
+                                        "anioApertura": "1759",
+                                        "salasExposicion": 1500,
+                                        "descripcionGeneral": "Aquí debería poner algo largo, pero no me da tiempo",
+                                        "urlOficial": "https://www.britishmuseum.org/",
+                                        "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/3/3a/British_Museum_from_NE_2.JPG"
+                                      }
+                                    ]
+                                    """
+                    )
+            )
+    )
+    @Operation(description = "Obtener un listado con todos los museos.", summary = "Obtener todos los museos")
     public ResponseEntity<List<MuseumResponseDto>> obtenerMuseos() {
         return ResponseEntity.ok(service.getAll().stream().map(MuseumResponseDto::to).toList());
     }
 
     @PostMapping()
+    @Operation(description = "Solicitud para crear un Museo", summary = "Crear un museo")
+    @ApiResponse(
+            responseCode = "201",
+            description = "Museo generado correctamente",
+            content = @Content(
+                    mediaType = "application/JSON",
+                    schema = @Schema(implementation = MuseumResponseDto.class),
+                    examples = @ExampleObject(
+                            value = """
+                                    {
+                                      "id": 1,
+                                      "nombre": "British Museum",
+                                      "ciudad": "Londres",
+                                      "anioApertura": "1759",
+                                      "salasExposicion": 1500,
+                                      "descripcionGeneral": "Aquí debería poner algo largo, pero no me da tiempo",
+                                      "urlOficial": "https://www.britishmuseum.org/",
+                                      "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/3/3a/British_Museum_from_NE_2.JPG"
+                                    }
+                                    """
+                    )
+            )
+    )
+    @ApiResponse(
+            responseCode = "400",
+            description = "Has insertado algun dato invalido.",
+            content = @Content(
+                    mediaType = "application/JSON",
+                    schema = @Schema(implementation = ProblemDetail.class),
+                    examples = {
+                            @ExampleObject(
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Datos incorrectos enviados en el museo.",
+                                              "status": 400,
+                                              "detail": "El nombre no debe ser vacio.",
+                                              "instance": "/museum"
+                                            }
+                                            """
+                            )
+                    }
+            )
+    )
     public ResponseEntity<MuseumResponseDto> crearMuseo(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     required = true,
@@ -63,6 +131,15 @@ public class MuseoLocalController {
                             schema = @Schema(implementation = MuseumRequestDto.class),
                             examples = @ExampleObject(
                                     value = """
+                                            {
+                                              "nombre": "British Museum",
+                                              "ciudad": "Londres",
+                                              "anioApertura": "1759",
+                                              "salasExposicion": 1500,
+                                              "descripcionGeneral": "Aquí debería poner algo largo, pero no me da tiempo",
+                                              "urlOficial": "https://www.britishmuseum.org/",
+                                              "urlImagen": "https://upload.wikimedia.org/wikipedia/commons/3/3a/British_Museum_from_NE_2.JPG"
+                                            }
                                             """
                             )
                     )

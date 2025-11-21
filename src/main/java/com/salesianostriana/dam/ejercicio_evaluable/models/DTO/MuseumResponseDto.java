@@ -12,6 +12,7 @@ import java.time.Year;
 @AllArgsConstructor @NoArgsConstructor @Builder @Data
 public class MuseumResponseDto {
 
+    private Long id;
     private String nombre;
     private String ciudad;
     private Year anioApertura;
@@ -22,6 +23,7 @@ public class MuseumResponseDto {
 
     public static MuseumResponseDto to(MuseoLocal museoLocal) {
         return MuseumResponseDto.builder()
+                .id(museoLocal.getId())
                 .nombre(museoLocal.getNombre())
                 .ciudad(museoLocal.getCiudad())
                 .anioApertura(museoLocal.getAnioApertura())
