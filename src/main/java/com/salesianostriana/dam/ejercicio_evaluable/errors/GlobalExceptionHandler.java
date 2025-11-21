@@ -27,5 +27,15 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(MuseumNotFoundException.class)
+    public ProblemDetail notFound(MuseumNotFoundException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                ex.getMessage()
+        );
+        problemDetail.setTitle("Museo no encontrado.");
+        return problemDetail;
+    }
+
 
 }

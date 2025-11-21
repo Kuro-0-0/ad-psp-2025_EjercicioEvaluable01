@@ -4,6 +4,7 @@ import com.salesianostriana.dam.ejercicio_evaluable.models.DTO.MuseumRequestDto;
 import com.salesianostriana.dam.ejercicio_evaluable.models.DTO.MuseumResponseDto;
 import com.salesianostriana.dam.ejercicio_evaluable.services.MuseoLocalService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -147,6 +149,19 @@ public class MuseoLocalController {
             @RequestBody MuseumRequestDto museoDTO
             ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(MuseumResponseDto.to(service.crearMuseo(museoDTO.from())));
+    }
+
+    @GetMapping("/{id}")
+    @Operation(description = "Solicitud para obtener detalles de un Museo", summary = "Obtener detalles de un museo")
+    public ResponseEntity<MuseumResponseDto> obtenerDetallesMuseo(
+            @Parameter(
+                    description = "ID del museo",
+                    required = true,
+                    example = "1"
+            )
+            @PathVariable long id
+    ) {
+        return ResponseEntity.ok(MuseumResponseDto.to(service.obtenerDetalles(id)));
     }
 
 }

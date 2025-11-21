@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.ejercicio_evaluable.services;
 
 import com.salesianostriana.dam.ejercicio_evaluable.errors.InvalidMuseumDataException;
+import com.salesianostriana.dam.ejercicio_evaluable.errors.MuseumNotFoundException;
 import com.salesianostriana.dam.ejercicio_evaluable.errors.NoItemsFound;
 import com.salesianostriana.dam.ejercicio_evaluable.models.DTO.MuseumResponseDto;
 import com.salesianostriana.dam.ejercicio_evaluable.models.MuseoLocal;
@@ -36,5 +37,9 @@ public class MuseoLocalService {
         }
 
         return museo;
+    }
+
+    public MuseoLocal obtenerDetalles(long id) {
+        return repository.findById(id).orElseThrow(() -> new MuseumNotFoundException("No se ha encontrado el museo de ID " + id));
     }
 }
